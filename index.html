@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReWeave</title>
+  <style>
+    :root{
+      --bg:#000000;
+      --panel:#0a0a0a;
+      --panel2:#120909;
+      --red:#f87171;
+      --red2:#fca5a5;
+      --line:rgba(248,113,113,.25);
+      --text:rgba(255,235,235,.92);
+      --muted:rgba(255,220,220,.74);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(220,38,38,.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(239,68,68,.10), transparent 22%),
+        var(--bg);
+      color:white;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    .neon{
+      color:var(--red);
+      text-shadow:0 0 8px rgba(248,113,113,.92), 0 0 20px rgba(248,113,113,.25);
+    }
+    .neon-soft{
+      color:var(--red2);
+      text-shadow:0 0 10px rgba(252,165,165,.85);
+    }
+    .muted{color:var(--muted)}
+    .card{
+      background:linear-gradient(180deg, rgba(18,18,18,.98), rgba(8,8,8,.98));
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:0 0 26px rgba(239,68,68,.08);
+    }
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(8px);
+      background:rgba(0,0,0,.88);
+      border-bottom:1px solid rgba(248,113,113,.18);
+    }
+    .header-wrap{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px 0; gap:20px;
+    }
+    .brand{display:flex; align-items:center; gap:16px}
+    .brand-title{font-size:42px; margin:0; line-height:1; font-family: Georgia, 'Times New Roman', serif;}
+    .brand-sub{margin-top:4px; color:rgba(255,220,220,.8); font-size:14px}
+    nav{display:flex; gap:26px; flex-wrap:wrap}
+    nav a{font-size:14px; color:rgba(255,235,235,.88)}
+    nav a:hover{color:var(--red2)}
+    .hero{
+      padding:54px 0 36px;
+      border-bottom:1px solid rgba(248,113,113,.10);
+    }
+    .grid-2{display:grid; grid-template-columns:1.05fr .95fr; gap:28px}
+    .hero h1{
+      font-size:62px; line-height:1.03; margin:16px 0 18px; max-width:760px;
+      color:var(--red2); text-shadow:0 0 16px rgba(252,165,165,.92);
+    }
+    .pill{
+      display:inline-block; border:1px solid rgba(248,113,113,.32);
+      background:rgba(239,68,68,.10); padding:9px 14px; border-radius:999px;
+      color:var(--red2); font-weight:700; font-size:13px;
+      text-shadow:0 0 8px rgba(252,165,165,.55);
+    }
+    .section{padding:42px 0}
+    .section-title{font-size:34px; margin:10px 0 0}
+    .eyebrow{font-size:12px; font-weight:700; letter-spacing:.22em; text-transform:uppercase}
+    .pad{padding:28px}
+    .hero-right{display:grid; gap:22px}
+    p{line-height:1.8; color:var(--text)}
+    table{width:100%; border-collapse:collapse; font-size:14px}
+    thead th{
+      background:#b91c1c; color:white; text-align:left; padding:14px 16px;
+      border-bottom:1px solid rgba(255,255,255,.1)
+    }
+    tbody td{
+      padding:14px 16px; border-top:1px solid rgba(248,113,113,.14); color:var(--text);
+      background:rgba(0,0,0,.52);
+    }
+    tbody tr td:first-child{color:#fff; font-weight:700}
+    .steps, .impact-grid, .marketing-grid, .team-grid{
+      display:grid; gap:22px;
+    }
+    .steps{grid-template-columns:repeat(4,1fr)}
+    .impact-grid{grid-template-columns:repeat(3,1fr)}
+    .marketing-grid{grid-template-columns:1fr 1fr}
+    .step-num{
+      width:42px;height:42px;border-radius:14px;background:#b91c1c;color:#fff;
+      display:flex;align-items:center;justify-content:center;font-weight:700;
+      box-shadow:0 0 12px rgba(239,68,68,.35)
+    }
+    .step h3, .impact h3{margin:12px 0 0; font-size:21px; color:var(--red2)}
+    .highlight{
+      display:flex; gap:12px; align-items:flex-start;
+      border:1px solid rgba(248,113,113,.14); border-radius:20px;
+      background:rgba(0,0,0,.42); padding:14px 16px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;background:#ef4444;
+      box-shadow:0 0 10px rgba(239,68,68,.8); margin-top:8px; flex:0 0 auto;
+    }
+    .team-list{
+      display:grid; grid-template-columns:1fr 1fr; gap:18px;
+    }
+    .form-grid{
+      display:grid; grid-template-columns:1fr 1fr; gap:16px;
+    }
+    .field label{
+      display:block; margin-bottom:8px; font-size:14px; color:#ffe4e6; font-weight:600;
+    }
+    .input, select, textarea, input[type=file]{
+      width:100%; padding:14px 16px; border-radius:18px;
+      border:1px solid rgba(248,113,113,.28); background:#000; color:#fff;
+      outline:none;
+    }
+    .input::placeholder, textarea::placeholder{color:rgba(255,210,210,.35)}
+    .full{grid-column:1 / -1}
+    .btn{
+      width:100%; border:none; cursor:pointer; border-radius:18px;
+      padding:15px 18px; font-weight:700; color:#fff;
+      background:rgba(220,38,38,.92);
+      box-shadow:0 0 18px rgba(239,68,68,.28);
+    }
+    .badge-wrap{display:flex; flex-wrap:wrap; gap:10px; margin-top:16px}
+    .badge{
+      border:1px solid rgba(248,113,113,.28); background:rgba(239,68,68,.10);
+      color:#ffe4e6; border-radius:999px; padding:10px 14px; font-size:14px;
+    }
+    footer{
+      border-top:1px solid rgba(248,113,113,.18);
+      padding:32px 0 40px;
+    }
+    .footer-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px}
+    .footer-head{font-size:12px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--red2)}
+    .logo-wrap{display:flex; justify-content:center}
+    .logo-note{
+      margin-top:18px; padding:16px; border-radius:20px;
+      border:1px solid rgba(248,113,113,.16); background:rgba(0,0,0,.35)
+    }
+    @media (max-width: 980px){
+      .grid-2,.marketing-grid,.steps,.impact-grid,.footer-grid,.team-list{grid-template-columns:1fr}
+      .hero h1{font-size:46px}
+      nav{display:none}
+    }
+    @media (max-width: 720px){
+      .form-grid{grid-template-columns:1fr}
+      .hero h1{font-size:38px}
+      .brand-title{font-size:34px}
+      .container{padding:0 16px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-wrap">
+      <div class="brand">
+        <div class="logo-wrap">
+          <svg width="80" height="80" viewBox="0 0 100 100" aria-label="ReWeave logo">
+            <defs>
+              <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4d4d"></stop>
+                <stop offset="100%" stop-color="#7f1d1d"></stop>
+              </linearGradient>
+            </defs>
+            <ellipse cx="50" cy="40" rx="30" ry="20" fill="url(#grad)"></ellipse>
+            <path d="M20 40 Q50 80 80 40" stroke="#ff6666" stroke-width="3" fill="none"></path>
+            <line x1="30" y1="25" x2="30" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="37" y1="25" x2="37" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="44" y1="25" x2="44" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="51" y1="25" x2="51" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="58" y1="25" x2="58" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="65" y1="25" x2="65" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <path d="M10 50 Q20 60 25 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+            <path d="M90 50 Q80 60 75 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title neon">ReWeave</h1>
+          <div class="brand-sub">Turning waste into opportunity</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#products">Products</a>
+        <a href="#impact">Impact</a>
+        <a href="#team">Team</a>
+        <a href="#careers">Apply</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container grid-2">
+      <div>
+        <span class="pill">Social enterprise • Circular economy • Women-led impact</span>
+        <h1>ReWeave turns discarded waste into handmade products and flexible opportunities.</h1>
+      </div>
+
+      <div class="hero-right">
+        <div class="card pad">
+          <div class="eyebrow neon">About the venture</div>
+          <h2 class="section-title neon-soft">Financially sustainable. Socially impactful.</h2>
+          <p>
+            ReWeave is a social enterprise that addresses women’s economic inclusion and environmental waste at the same time. It creates handmade lifestyle products while building dignified, flexible work opportunities.
+          </p>
+        </div>
+
+        <div class="card pad">
+          <div class="logo-wrap">
+            <svg width="110" height="110" viewBox="0 0 100 100" aria-label="ReWeave logo">
+              <defs>
+                <linearGradient id="grad2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#ff4d4d"></stop>
+                  <stop offset="100%" stop-color="#7f1d1d"></stop>
+                </linearGradient>
+              </defs>
+              <ellipse cx="50" cy="40" rx="30" ry="20" fill="url(#grad2)"></ellipse>
+              <path d="M20 40 Q50 80 80 40" stroke="#ff6666" stroke-width="3" fill="none"></path>
+              <line x1="30" y1="25" x2="30" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <line x1="37" y1="25" x2="37" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <line x1="44" y1="25" x2="44" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <line x1="51" y1="25" x2="51" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <line x1="58" y1="25" x2="58" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <line x1="65" y1="25" x2="65" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+              <path d="M10 50 Q20 60 25 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+              <path d="M90 50 Q80 60 75 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+            </svg>
+          </div>
+          <h2 class="section-title neon-soft" style="text-align:center; margin-top:8px;">ReWeave</h2>
+          <p style="text-align:center; margin-top:8px;">Turning threads into second chances</p>
+          <div class="logo-note">
+            <div class="eyebrow neon">Purpose of the logo</div>
+            <p style="margin:10px 0 0;">
+              The woven basket represents creativity, craftsmanship, and the transformation of discarded materials into useful products. The hands symbolize women artisans, care, and skill. Together, the logo shows ReWeave’s purpose: turning waste into opportunity through flexible, dignified work and sustainable design.
+            </p>
+          </div>
+        </div>
+
+        <div class="card pad">
+          <div class="eyebrow neon">Products and selling prices</div>
+          <div style="margin-top:12px; overflow:auto; border-radius:18px; border:1px solid rgba(248,113,113,.18);">
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Category</th>
+                  <th>Selling Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Mini baskets</td><td>Everyday accessory</td><td>800–1,500 PKR</td></tr>
+                <tr><td>Storage trays</td><td>Decorative piece</td><td>1,200–2,000 PKR</td></tr>
+                <tr><td>Planter covers</td><td>Decorative piece</td><td>1,500–2,500 PKR</td></tr>
+                <tr><td>Tote bags</td><td>Everyday accessory</td><td>1,800–3,000 PKR</td></tr>
+                <tr><td>Coasters</td><td>Decorative piece</td><td>900–1,400 PKR</td></tr>
+                <tr><td>Wall hangings</td><td>Decorative piece</td><td>2,000–4,000 PKR</td></tr>
+                <tr><td>Table mats</td><td>Everyday accessory</td><td>1,500–2,800 PKR</td></tr>
+                <tr><td>Laundry baskets</td><td>Decorative piece</td><td>3,500–6,000 PKR</td></tr>
+                <tr><td>Organiser pouches</td><td>Everyday accessory</td><td>1,200–2,200 PKR</td></tr>
+                <tr><td>Decor baskets</td><td>Decorative piece</td><td>2,500–5,000 PKR</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container marketing-grid">
+      <div class="card pad">
+        <div class="eyebrow neon">How it works</div>
+        <div class="steps" style="margin-top:20px;">
+          <div class="step">
+            <div class="step-num">1</div>
+            <h3>Discover</h3>
+            <p>Customers explore ReWeave through Instagram, online platforms, university fairs, and pop-up stalls.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <h3>Order</h3>
+            <p>Buyers place orders for handmade décor, accessories, and premium upcycled pieces.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <h3>Work Flexibly</h3>
+            <p>Women artisans can work from home according to their own flexibility, making it easier to earn while managing family responsibilities.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <h3>Deliver</h3>
+            <p>Products are packed and delivered while creating both environmental and social impact.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card pad">
+        <div class="eyebrow neon">Why this website is appealing</div>
+        <div style="margin-top:18px; display:grid; gap:14px;">
+          <div class="highlight"><div class="dot"></div><p>Women empowerment + environmental sustainability</p></div>
+          <div class="highlight"><div class="dot"></div><p>Circular economy model using discarded textile and plastic waste</p></div>
+          <div class="highlight"><div class="dot"></div><p>Flexible work culture with home-based opportunities</p></div>
+          <div class="highlight"><div class="dot"></div><p>Strong storytelling and mission-led branding for better marketing</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="impact" class="section" style="border-top:1px solid rgba(248,113,113,.10); border-bottom:1px solid rgba(248,113,113,.10); background:radial-gradient(circle at center, rgba(127,29,29,.45), rgba(0,0,0,1));">
+    <div class="container">
+      <div class="eyebrow neon">Impact</div>
+      <h2 class="section-title neon-soft">Creating value for women, communities, and the environment.</h2>
+      <div class="impact-grid" style="margin-top:24px;">
+        <div class="card pad impact">
+          <h3>Social Impact</h3>
+          <p>ReWeave supports women who face rejection after being out of the workforce for too long, giving them flexible, confidence-building opportunities.</p>
+        </div>
+        <div class="card pad impact">
+          <h3>Environmental Impact</h3>
+          <p>The venture reduces landfill waste by upcycling discarded textile and plastic materials into valuable products.</p>
+        </div>
+        <div class="card pad impact">
+          <h3>Economic Impact</h3>
+          <p>A sustainable revenue model supports growth through product sales, fairs, pop-ups, and future partnerships.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="section">
+    <div class="container">
+      <div class="card pad">
+        <div class="brand" style="justify-content:flex-start;">
+          <svg width="70" height="70" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="grad3" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4d4d"></stop>
+                <stop offset="100%" stop-color="#7f1d1d"></stop>
+              </linearGradient>
+            </defs>
+            <ellipse cx="50" cy="40" rx="30" ry="20" fill="url(#grad3)"></ellipse>
+            <path d="M20 40 Q50 80 80 40" stroke="#ff6666" stroke-width="3" fill="none"></path>
+            <line x1="30" y1="25" x2="30" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="37" y1="25" x2="37" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="44" y1="25" x2="44" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="51" y1="25" x2="51" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="58" y1="25" x2="58" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="65" y1="25" x2="65" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <path d="M10 50 Q20 60 25 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+            <path d="M90 50 Q80 60 75 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+          </svg>
+          <div>
+            <div class="eyebrow neon">Meet our team</div>
+            <h2 class="section-title neon-soft" style="margin-top:8px;">The people behind ReWeave</h2>
+          </div>
+        </div>
+
+        <div style="margin-top:22px; overflow:auto; border-radius:18px; border:1px solid rgba(248,113,113,.18);">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Position</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Khadija Manahil</td><td>Co-Founder &amp; Creative Director</td></tr>
+              <tr><td>Manahil Fatima</td><td>Co-Founder &amp; Operations Lead</td></tr>
+              <tr><td>Aiman Saeed Khattak</td><td>Business &amp; Strategy Lead</td></tr>
+              <tr><td>Shahwaiz Ali</td><td>Impact &amp; Growth Lead</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="careers" class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="card pad">
+        <div class="grid-2">
+          <div>
+            <div class="brand" style="justify-content:flex-start;">
+              <svg width="70" height="70" viewBox="0 0 100 100" aria-hidden="true">
+                <defs>
+                  <linearGradient id="grad4" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ff4d4d"></stop>
+                    <stop offset="100%" stop-color="#7f1d1d"></stop>
+                  </linearGradient>
+                </defs>
+                <ellipse cx="50" cy="40" rx="30" ry="20" fill="url(#grad4)"></ellipse>
+                <path d="M20 40 Q50 80 80 40" stroke="#ff6666" stroke-width="3" fill="none"></path>
+                <line x1="30" y1="25" x2="30" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <line x1="37" y1="25" x2="37" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <line x1="44" y1="25" x2="44" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <line x1="51" y1="25" x2="51" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <line x1="58" y1="25" x2="58" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <line x1="65" y1="25" x2="65" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+                <path d="M10 50 Q20 60 25 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+                <path d="M90 50 Q80 60 75 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+              </svg>
+              <div>
+                <div class="eyebrow neon">Job application area</div>
+                <h2 class="section-title neon-soft" style="margin-top:8px;">Apply to join ReWeave</h2>
+              </div>
+            </div>
+            <p style="margin-top:16px;">
+              Applicants can enter their name, email, department, and other details to apply for flexible and meaningful roles at ReWeave.
+            </p>
+            <div class="card pad" style="margin-top:20px; background:linear-gradient(180deg, rgba(30,5,5,.95), rgba(0,0,0,.96));">
+              <h3 class="neon-soft" style="margin:0 0 8px;">Open departments</h3>
+              <div class="badge-wrap">
+                <span class="badge">IT</span>
+                <span class="badge">HR</span>
+                <span class="badge">Marketing</span>
+                <span class="badge">Sales</span>
+                <span class="badge">Design</span>
+                <span class="badge">Production</span>
+                <span class="badge">Operations</span>
+                <span class="badge">Impact</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card pad">
+            <div class="eyebrow neon">Application form</div>
+            <form class="form-grid" style="margin-top:18px;">
+              <div class="field">
+                <label>Full Name</label>
+                <input class="input" type="text" placeholder="Enter your full name">
+              </div>
+              <div class="field">
+                <label>Email Address</label>
+                <input class="input" type="email" placeholder="Enter your email">
+              </div>
+              <div class="field">
+                <label>Phone Number</label>
+                <input class="input" type="tel" placeholder="Enter your phone number">
+              </div>
+              <div class="field">
+                <label>City</label>
+                <input class="input" type="text" placeholder="Enter your city">
+              </div>
+              <div class="field">
+                <label>Department</label>
+                <select>
+                  <option>Choose a department</option>
+                  <option>IT</option><option>HR</option><option>Marketing</option><option>Sales</option>
+                  <option>Design</option><option>Production</option><option>Operations</option><option>Impact</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Desired Position</label>
+                <input class="input" type="text" placeholder="Enter desired position">
+              </div>
+              <div class="field">
+                <label>Work Preference</label>
+                <select>
+                  <option>Select preference</option>
+                  <option>Remote / Home-based</option>
+                  <option>Hybrid</option>
+                  <option>On-site</option>
+                  <option>Flexible</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Experience Level</label>
+                <select>
+                  <option>Select level</option>
+                  <option>Beginner</option>
+                  <option>Intermediate</option>
+                  <option>Experienced</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label>Why do you want to join ReWeave?</label>
+                <textarea rows="4" placeholder="Write a short introduction"></textarea>
+              </div>
+              <div class="field full">
+                <label>Skills</label>
+                <input class="input" type="text" placeholder="Example: design, communication, marketing, stitching, management">
+              </div>
+              <div class="field full">
+                <label>Upload CV / Portfolio</label>
+                <input type="file">
+              </div>
+              <div class="field full">
+                <button class="btn" type="button">Submit Application</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand" style="gap:12px;">
+          <svg width="54" height="54" viewBox="0 0 100 100" aria-hidden="true">
+            <defs>
+              <linearGradient id="grad5" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#ff4d4d"></stop>
+                <stop offset="100%" stop-color="#7f1d1d"></stop>
+              </linearGradient>
+            </defs>
+            <ellipse cx="50" cy="40" rx="30" ry="20" fill="url(#grad5)"></ellipse>
+            <path d="M20 40 Q50 80 80 40" stroke="#ff6666" stroke-width="3" fill="none"></path>
+            <line x1="30" y1="25" x2="30" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="37" y1="25" x2="37" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="44" y1="25" x2="44" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="51" y1="25" x2="51" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="58" y1="25" x2="58" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <line x1="65" y1="25" x2="65" y2="55" stroke="#ffd1d1" stroke-width="1"></line>
+            <path d="M10 50 Q20 60 25 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+            <path d="M90 50 Q80 60 75 70" stroke="#fca5a5" stroke-width="4" fill="none"></path>
+          </svg>
+          <div class="brand-title neon" style="font-size:34px;">ReWeave</div>
+        </div>
+        <p class="muted">Handmade products. Circular design. Women-led change.</p>
+      </div>
+      <div>
+        <div class="footer-head neon-soft">Sales channels</div>
+        <p class="muted">Instagram, online platforms, university fairs, and pop-up stalls.</p>
+      </div>
+      <div>
+        <div class="footer-head neon-soft">Contacts</div>
+        <p class="muted">Email: hello@reweave.pk<br>Phone: +92 300 1234567<br>Location: Pakistan</p>
+      </div>
+      <div>
+        <div class="footer-head neon-soft">Key positions</div>
+        <p class="muted">Creative Direction<br>Operations &amp; Outreach<br>IT &amp; Website Support<br>Impact &amp; Growth</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
